@@ -1,0 +1,9 @@
+name: tumor_pipeline
+version: "1.0.0"
+profile: tumor_pipeline
+model-paths: ["models"]
+
+models:
+  tumor_pipeline:
+    staging:
+      +materialized: view
