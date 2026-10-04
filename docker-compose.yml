@@ -7,5 +7,25 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  airflow:
+    build: ./airflow
+    command: standalone
+    env_file: .env
+    ports:
+      - "8080:8080"
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: "5432"
+      DBT_TARGET_PATH: /tmp/dbt_target
+      DBT_LOG_PATH: /tmp/dbt_logs
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./ingest:/opt/airflow/project/ingest
+      - ./data:/opt/airflow/project/data
+      - ./dbt_project:/opt/airflow/project/dbt_project
+    depends_on:
+      - postgres
+
 volumes:
   pgdata:
